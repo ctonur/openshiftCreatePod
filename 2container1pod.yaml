@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example
+  labels:
+    app: httpd
+  namespace: onursandikci-dev
+spec:
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: httpd
+      image: 'image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest'
+      ports:
+        - containerPort: 8080
+    - name: my-container
+      image: quay.io/centos/centos:latest
+      command: ["/bin/sh", "-c", "while true; do echo Hello OpenShift!; sleep 5; done"]
+      ports:
+        - containerPort: 8090
